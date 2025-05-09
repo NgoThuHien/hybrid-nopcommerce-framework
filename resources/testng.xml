@@ -5,7 +5,7 @@
 
     <test name="Run on FireFox">
         <classes>
-            <class name="com.nopcommerce.users.Level_01_Repeat_Yourself"/>
+            <class name="com.nopcommerce.users.Level_03_Page_Object"/>
         </classes>
     </test>
 
