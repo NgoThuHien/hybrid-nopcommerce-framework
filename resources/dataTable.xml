@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Data Table" >
+    <parameter name="url" value="https://www.jqueryscript.net/demo/CRUD-Data-Grid-Plugin-jQuery-Quickgrid/"/>
+
+    <test name="Run on FireFox browser">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="com.jquery.cases.Level_10_Table_Grid"/>
+        </classes>
+    </test>
+
+</suite>

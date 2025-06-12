@@ -2,19 +2,17 @@ package com.nopcommerce.users;
 
 import commons.BaseTest;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pageObjects.nopCommerce.user.UserCustomerInfoPO;
 import pageObjects.nopCommerce.user.UserHomePageObject;
 import pageObjects.nopCommerce.user.UserLoginPageObject;
 import pageObjects.nopCommerce.user.UserRegisterPageObject;
 
-import java.time.Duration;
-
-public class Level_03_Page_Object extends BaseTest {
+public class Level_04_Multi_Browser extends BaseTest {
     //Declare Variables
     private WebDriver driver;
     private UserHomePageObject homePage;
@@ -24,12 +22,10 @@ public class Level_03_Page_Object extends BaseTest {
    private String firstName, lastName, email, company, password;
 
     //Pre-condition
+    @Parameters("browser")
     @BeforeClass
-    public void beforeClass(){
-        driver = new ChromeDriver();
-
-        driver.get("https://demo.nopcommerce.com/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+    public void beforeClass(String browserName){
+       driver = getBrowser(browserName);
 
         // nó đc khoi tao ra và bắt dau lam những action của page đó
         homePage = new UserHomePageObject(driver);
@@ -58,7 +54,6 @@ public class Level_03_Page_Object extends BaseTest {
 
         Assert.assertEquals(registerPage.getRegisterSuccessMessage(),"Your registration completed");
 
-
     }
 
     @Test
@@ -85,8 +80,6 @@ public class Level_03_Page_Object extends BaseTest {
         Assert.assertEquals(customerInfoPage.getLastNameTextboxValue(),lastName);
         Assert.assertEquals(customerInfoPage.getEmailTextboxValue(),email);
         Assert.assertEquals(customerInfoPage.getCompanyTextboxValue(),company);
-
-
 
     }
 

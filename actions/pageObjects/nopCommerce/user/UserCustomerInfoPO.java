@@ -1,16 +1,15 @@
-package pageObjects;
+package pageObjects.nopCommerce.user;
 
-import commons.BasePage;
 import org.openqa.selenium.WebDriver;
-import pageUIs.CustomerInfoPageUI;
+import pageUIs.nopCommerce.user.CustomerInfoPageUI;
 
-public class CustomerInfoPageObject extends BasePage {
-
-    public CustomerInfoPageObject(WebDriver driver) {
+public class UserCustomerInfoPO extends UserSideBarPageObject {
+    WebDriver driver;
+    public UserCustomerInfoPO(WebDriver driver) {
+        super(driver);
         this.driver = driver;
     }
 
-    WebDriver driver;
     public boolean isGenderMailSelected() {
         waitForElementSelected(driver, CustomerInfoPageUI.GENDER_MAIL_RADIO);
         return isControlSelected(driver, CustomerInfoPageUI.GENDER_MAIL_RADIO);

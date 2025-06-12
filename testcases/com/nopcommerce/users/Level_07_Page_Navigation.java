@@ -1,38 +1,38 @@
 package com.nopcommerce.users;
 
 import commons.BaseTest;
+import commons.PageGeneratorManagerNopCommerce;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pageObjects.nopCommerce.user.UserCustomerInfoPO;
-import pageObjects.nopCommerce.user.UserHomePageObject;
-import pageObjects.nopCommerce.user.UserLoginPageObject;
-import pageObjects.nopCommerce.user.UserRegisterPageObject;
+import pageObjects.nopCommerce.user.*;
 
-import java.time.Duration;
 
-public class Level_03_Page_Object extends BaseTest {
+public class Level_07_Page_Navigation extends BaseTest {
     //Declare Variables
     private WebDriver driver;
     private UserHomePageObject homePage;
     private UserRegisterPageObject registerPage;
     private UserLoginPageObject loginPage;
     private UserCustomerInfoPO customerInfoPage;
+    private UserOrderPageObject orderPage;
+    private UserAddressPO addressPage;
+    private UserRewardPageObject rewardPage;
+    private UserChangePasswordPO changePasswordPage;
+    private UserMyProductReviewPO myProductReviewPage;
    private String firstName, lastName, email, company, password;
 
     //Pre-condition
+    @Parameters("browser")
     @BeforeClass
-    public void beforeClass(){
-        driver = new ChromeDriver();
-
-        driver.get("https://demo.nopcommerce.com/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+    public void beforeClass(String browserName){
+       driver = getBrowser(browserName);
 
         // nó đc khoi tao ra và bắt dau lam những action của page đó
-        homePage = new UserHomePageObject(driver);
+        homePage = PageGeneratorManagerNopCommerce.getUserHomePage(driver);
         firstName = "John";
         lastName = "Mayer";
         company = "GG";
@@ -43,10 +43,8 @@ public class Level_03_Page_Object extends BaseTest {
     //Testcases
     @Test
     public void User_01_Register(){
-        homePage.openRegisterPage();
 
-        registerPage = new UserRegisterPageObject(driver);
-
+        registerPage = homePage.openRegisterPage();
         registerPage.clickToMaleRadio();
         registerPage.enterToFirstNameTextbox(firstName);
         registerPage.enterToLastNameTextbox(lastName);
@@ -58,27 +56,21 @@ public class Level_03_Page_Object extends BaseTest {
 
         Assert.assertEquals(registerPage.getRegisterSuccessMessage(),"Your registration completed");
 
-
     }
 
     @Test
     public void User_02_Login(){
-        registerPage.openLoginPage();
+        loginPage = registerPage.openLoginPage();
 
-        loginPage = new UserLoginPageObject(driver);
-        loginPage.enterToEmailTextbox(email);
-        loginPage.enterToPasswordTextbox(password);
-        loginPage.clickToLoginButton();
+        homePage = loginPage.loginToSystem(email,password);
 
-        homePage = new UserHomePageObject(driver);
         //Assert.assertTrue(homePage.isMyAccountLinkisDisplayed());
     }
 
     @Test
     public void User_03_MyAccount(){
-        homePage.openMyAccountPage();
 
-        customerInfoPage = new UserCustomerInfoPO(driver);
+        customerInfoPage = homePage.openMyAccountPage();
         Assert.assertTrue(customerInfoPage.isGenderMailSelected());
 
         Assert.assertEquals(customerInfoPage.getFirstNameTextboxValue(),firstName);
@@ -87,9 +79,32 @@ public class Level_03_Page_Object extends BaseTest {
         Assert.assertEquals(customerInfoPage.getCompanyTextboxValue(),company);
 
 
-
     }
 
+    @Test
+    public void User_04_Switch_Page(){
+        //Customer Info => Address
+        addressPage = customerInfoPage.openAddressPage();
+
+        //Address => Reward
+        rewardPage = addressPage.openRewardPage();
+
+        //Reward => Order
+        orderPage = rewardPage.openOrderPage();
+
+        //Order => Address
+        addressPage = orderPage.openAddressPage();
+
+        //Address => Customer Info
+        customerInfoPage = addressPage.openCustomerInfoPage();
+
+        //Customer Info => Change password
+        changePasswordPage = customerInfoPage.openChangePasswordPage();
+
+        //Change password => My product review
+        myProductReviewPage = changePasswordPage.openMyProductReviewPage();
+
+    }
     //Post-condition
     @AfterClass
     public void afterClass(){
