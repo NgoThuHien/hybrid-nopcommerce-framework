@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.nopCommerce.user.*;
 
 import pageUIs.nopCommerce.user.BasePageUIs;
-import pageUIs.nopCommerce.user.HomePageUI;
 import pageUIs.nopCommerce.user.UserSideBarUIs;
 
 import java.time.Duration;
@@ -240,10 +239,25 @@ public class BasePage {
        }
 
     }
-    public boolean isControlDisplayed(WebDriver driver, String locator,String restParameter) {
-        try {
-            return getElement(driver, castParameter(locator,restParameter)).isDisplayed();
-        } catch (Exception e) {
+    public void overrideGlobalTimeout(WebDriver driver, long seconds){
+      driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(seconds));
+    }
+
+    public boolean isElementDisplayed(WebDriver driver, String locator, String restParameter) {
+        return getElement(driver, castParameter(locator,restParameter)).isDisplayed();
+    }
+    public boolean isElementDisplayed(WebDriver driver, String locator) {
+        return getElement(driver, locator).isDisplayed();
+    }
+    public boolean isElementUndisplayed(WebDriver driver, String locator){
+        overrideGlobalTimeout(driver,GlobalConstants.SHORT_TIMEOUT);
+        List<WebElement> elements = getListElement(driver,locator);
+        overrideGlobalTimeout(driver,GlobalConstants.LONG_TIMEOUT);
+        if(elements.size() == 0){
+            return true;
+        } else if(elements.size() > 0 && elements.get(0).isDisplayed()){
+            return true;
+        } else {
             return false;
         }
     }

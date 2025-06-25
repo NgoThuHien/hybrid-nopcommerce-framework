@@ -13,4 +13,5 @@ public class UserRegisterPageUI {
     public static final String LOGIN_LINK = "xpath=//a[text()='Log in']";
 
 
+    public static final String REGISTER_PAGE_TITLE = "xpath=//div[@class='page-title']/h1";
 }

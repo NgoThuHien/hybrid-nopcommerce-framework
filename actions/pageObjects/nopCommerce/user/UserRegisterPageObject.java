@@ -62,4 +62,10 @@ public class UserRegisterPageObject extends BasePage {
         clickToElement(driver, UserRegisterPageUI.LOGIN_LINK);
         return PageGeneratorManagerNopCommerce.getUserLoginPage(driver);
     }
+
+    public String getRegiterPageTitle() {
+        waitForElementVisible(driver,UserRegisterPageUI.REGISTER_PAGE_TITLE);
+        return getTextElement(driver,UserRegisterPageUI.REGISTER_PAGE_TITLE);
+
+    }
 }

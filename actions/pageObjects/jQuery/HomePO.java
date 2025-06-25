@@ -103,7 +103,7 @@ public class HomePO extends BasePage {
 
     public boolean isFileLoadedByname(String fileName) {
         waitForElementVisible(driver, BasePageUIs.FILE_LOADED_BY_FILE_NAME,fileName);
-        return isControlDisplayed(driver, BasePageUIs.FILE_LOADED_BY_FILE_NAME,fileName);
+        return isElementDisplayed(driver, BasePageUIs.FILE_LOADED_BY_FILE_NAME,fileName);
     }
 
     public void clickToUploadButton(WebDriver driver) {
@@ -116,6 +116,6 @@ public class HomePO extends BasePage {
 
     public boolean isFileLoadedSuccessByname(String fileName) {
         waitForElementVisible(driver,BasePageUIs.FILE_UPLOADED_SUCCESS_BY_FILE_NAME,fileName);
-        return isControlDisplayed(driver,BasePageUIs.FILE_UPLOADED_SUCCESS_BY_FILE_NAME,fileName);
+        return isElementDisplayed(driver,BasePageUIs.FILE_UPLOADED_SUCCESS_BY_FILE_NAME,fileName);
     }
 }
