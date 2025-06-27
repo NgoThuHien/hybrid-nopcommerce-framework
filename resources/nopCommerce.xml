@@ -8,24 +8,11 @@
     <parameter name="userUrl" value="https://demo.nopcommerce.com/login"/>
     <parameter name="adminUrl" value="https://admin-demo.nopcommerce.com/login"/>
 
-    <test name="Run on FireFox browser">
+    <test name="Run on FireFox browser" preserve-order="true">
         <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="com.nopcommerce.users.Level_11_Log_Report"/>
-        </classes>
-    </test>
-
-    <test name="Run on Chrome browser">
-        <parameter name="browser" value="chrome"/>
-        <classes>
-            <class name="com.nopcommerce.users.Level_11_Log_Report"/>
-        </classes>
-    </test>
-
-    <test name="Run on Edge browser">
-        <parameter name="browser" value="edge"/>
-        <classes>
-            <class name="com.nopcommerce.users.Level_11_Log_Report"/>
+            <class name="com.nopcommerce.common.Login"/>
+            <class name="com.nopcommerce.users.Level_13_Share_State"/>
         </classes>
     </test>
 

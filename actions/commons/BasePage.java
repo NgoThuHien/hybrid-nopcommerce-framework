@@ -23,6 +23,15 @@ public class BasePage {
     private String castParameter(String locator, String... restParameter){
        return String.format(locator, (Object[]) restParameter);
     }
+    public Set<Cookie> getAllCookies(WebDriver driver){
+        return driver.manage().getCookies();
+    }
+    public void setCookies(WebDriver driver, Set<Cookie> cookies){
+        for (Cookie cookie: cookies) {
+            driver.manage().addCookie(cookie);
+        }
+        sleepInSecond(3);
+    }
     private By getByLocator(String prefixLocator){
         By by = null;
         if(prefixLocator.toLowerCase().startsWith("xpath")){
@@ -243,7 +252,7 @@ public class BasePage {
       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(seconds));
     }
 
-    public boolean isElementDisplayed(WebDriver driver, String locator, String restParameter) {
+    public boolean isElementDisplayed(WebDriver driver, String locator, String... restParameter) {
         return getElement(driver, castParameter(locator,restParameter)).isDisplayed();
     }
     public boolean isElementDisplayed(WebDriver driver, String locator) {
@@ -264,6 +273,13 @@ public class BasePage {
     public boolean isControlSelected(WebDriver driver, String locator) {
         try {
             return getElement(driver, locator).isSelected();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean isControlSelected(WebDriver driver, String locator, String ... restParameter) {
+        try {
+            return getElement(driver, castParameter(locator,restParameter)).isSelected();
         } catch (Exception e) {
             return false;
         }
@@ -542,7 +558,30 @@ public class BasePage {
     }
 
 
+    public void clickToRadioById(WebDriver driver, String radioId) {
+        waitForElementClickable(driver,BasePageUIs.RADIO_BY_ID,radioId);
+        checkTheCheckboxOrRadio(driver,BasePageUIs.RADIO_BY_ID,radioId);
+    }
 
+    public void enterToTextboxById(WebDriver driver, String textboxId, String valueSendkey) {
+        waitForElementVisible(driver,BasePageUIs.TEXTBOX_BY_ID, textboxId);
+        sendKeyToElement(driver,BasePageUIs.TEXTBOX_BY_ID, valueSendkey, textboxId);
+    }
+
+    public void clickToButtonByText(WebDriver driver, String textButton) {
+        waitForElementClickable(driver, BasePageUIs.BUTTON_BY_TEXT,textButton);
+        clickToElement(driver, BasePageUIs.BUTTON_BY_TEXT,textButton);
+    }
+
+    public boolean isRadioByIdSelected(WebDriver driver, String radioId) {
+        waitForElementVisible(driver,BasePageUIs.RADIO_BY_ID,radioId);
+        return isControlSelected(driver,BasePageUIs.RADIO_BY_ID,radioId);
+    }
+
+    public String getTextboxValueById(WebDriver driver,  String textboxId) {
+        waitForElementVisible(driver,BasePageUIs.TEXTBOX_BY_ID,textboxId);
+        return getAttributeValue(driver,BasePageUIs.TEXTBOX_BY_ID,"value",textboxId);
+    }
 }
 
 
